@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+html,
+body,
+#root,
+.app,
+.content {
+  height: 100%;
+  width: 100%;
+  font-family: "Source Sans Pro", sans-serif;
+  background-color:#f5f5f5;
+  overflow: hidden;
+}
+.content_body{
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  height: 90%;
+  overflow: scroll;
+}
+.app {
+  display: flex;
+  position: relative;
+}
+.menu-bars {
+  text-decoration: none;
+  color: #000;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.pagination-box {
+  margin-top: 10px;
+  align-items: flex-end;
+}
+
+.box-table-pagination {
+  padding: 2%;
+  background-color: #c9c9c9;
+  border-radius: 20px;
+}
+
+.table-container {
+  border-radius: 50px;
+}
+
+.marker {
+  cursor:pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+}
+
+.popup {
+  position: absolute;
+  top: -30px;
+  left: 30px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
