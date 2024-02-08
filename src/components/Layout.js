@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Permission from "../context/permission.json"
 
 
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -94,6 +95,7 @@ export default function MiniDrawer() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const { users } = useSelector((state) => state.users);
+    const navigate = useNavigate()
 
 
     const handleDrawerOpen = () => {
@@ -167,6 +169,7 @@ export default function MiniDrawer() {
                                             justifyContent: open ? 'initial' : 'center',
                                             px: 2.5,
                                         }}
+                                        onClick={() => { navigate(item?.href) }}
                                     >
                                         <ListItemIcon
                                             sx={{

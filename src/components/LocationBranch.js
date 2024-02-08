@@ -18,9 +18,8 @@ const Marker = ({ lat, lng, branch }) => {
   )
 }
 
-const LocationBranch = (data) => {
+const LocationBranch = ({data}) => {
 //   const Marker = ({ text }) => <div className="marker">📍{text}</div>
-  console.log(data)
   const defaultProps = {
     center: {
       lat: 15.225245,
@@ -38,12 +37,12 @@ const LocationBranch = (data) => {
         defaultZoom={defaultProps.zoom}
         draggable={false}
       >
-        {data.data.map((position, index) => (
+        {data.map((position, index) => (
           <Marker
             key={index}
             lat={position.lat}
             lng={position.lng}
-            branch={position.branch}
+            branch={position.name}
           />
         ))}
       </GoogleMapReact>

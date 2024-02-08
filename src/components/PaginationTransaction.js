@@ -9,8 +9,10 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
+import TransactionService from "../service/TransactionService"
+import Swal from "sweetalert2"
 
-const PaginationTransaction = ({ data, itemsPerPage }) => {
+const PaginationTransaction = ({ data, itemsPerPage, fetch }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(data.length / itemsPerPage)
@@ -22,9 +24,26 @@ const PaginationTransaction = ({ data, itemsPerPage }) => {
     setCurrentPage(page)
   }
 
+  const approve = (id) => {
+    TransactionService.apperove(id).then((response) => {
+      Swal.fire({
+        title: "ทำรายการสำเร็จ",
+        icon: "success"
+      });
+      fetch()
+    }).catch((error) => {
+      Swal.fire({
+        title: 'Error!',
+        text: `${error?.response?.data?.message}`,
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+    })
+  }
+
+  
   return (
     <div className="box-table-pagination">
-      {/*Render your data list or table*/}
       <TableContainer className='table-container' component={Paper}>
         <Table>
           <TableHead>
@@ -37,28 +56,24 @@ const PaginationTransaction = ({ data, itemsPerPage }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentPageData.map((row, index) => (
+            {data.map((row, index) => (
               <TableRow
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row?.product?.name}
                 </TableCell>
-                <TableCell align="right">{row.amount}</TableCell>
-                <TableCell align="right">{row.branch}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
+                <TableCell align="right">{row?.amount}</TableCell>
+                <TableCell align="right">{row?.branch?.name}</TableCell>
+                <TableCell align="right">{row?.status}</TableCell>
                 <TableCell align="right">
-                  {row.status === 'Waiting' && (
-                    <>
-                      <Button variant="contained" color="success" onClick={console.log(555)}>
-                        อนุมัติ
-                      </Button>{' '}
-                      <Button variant="outlined" color="error">
-                        ไม่อนุมัติ
-                      </Button>
-                    </>
-                  )}
+                  <Button variant="contained" color="success" disabled={row?.status != "Waiting" ? true : false} onClick={() => { approve(row?._id) }}>
+                    อนุมัติ
+                  </Button>{' '}
+                  <Button variant="outlined" color="error" disabled={row?.status != "Waiting" ? true : false}>
+                    ไม่อนุมัติ
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

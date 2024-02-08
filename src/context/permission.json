@@ -10,5 +10,65 @@
             "manager",
             "driver"
         ]
+    },
+    {
+        "id": " uniqueId()",
+        "title": "User",
+        "icon": "IconReport",
+        "href": "/dashboard/user",
+        "type": "page",
+        "role": [
+            "admin",
+            "manager",
+            "driver"
+        ]
+    },
+    {
+        "id": " uniqueId()",
+        "title": "Product",
+        "icon": "IconReport",
+        "href": "/dashboard/product",
+        "type": "page",
+        "role": [
+            "admin",
+            "manager",
+            "driver"
+        ]
+    },
+    {
+        "id": " uniqueId()",
+        "title": "Stock",
+        "icon": "IconReport",
+        "href": "/dashboard/stock",
+        "type": "page",
+        "role": [
+            "admin",
+            "manager",
+            "driver"
+        ]
+    },
+    {
+        "id": " uniqueId()",
+        "title": "Transaction",
+        "icon": "IconReport",
+        "href": "/dashboard/transaction",
+        "type": "page",
+        "role": [
+            "admin",
+            "manager",
+            "driver"
+        ]
+    },
+    {
+        "id": " uniqueId()",
+        "title": "Msanage",
+        "icon": "IconReport",
+        "href": "/dashboard/manage",
+        "type": "page",
+        "role": [
+            "admin",
+            "manager",
+            "driver"
+        ]
     }
 ]
