@@ -1,38 +1,40 @@
-import react, { useState } from "react";
-
-import { Routes, Route } from "react-router-dom";
-
-import HeaderBar from "./layout/HeaderBar";
-import { CssBaseline, Box } from "@mui/material";
-import SideBar from "./layout/SideBar";
-import ContentMap from "./components/ContentMap";
+import React, { Suspense } from 'react'
+import store from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import { Provider } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/admin/Dashboard";
 import Manage from "./pages/admin/Manage";
 import Login from "./pages/Login";
+import Layout from "./components/Layout"
+import JWTGuard from "./guard/JWTGuard"
+import RoleGuard from "./guard/RoleGuard"
 
-function App() {
-  const [isSidebar, setIsSidebar] = useState(true);
+let persistor = persistStore(store);
+
+export default function App() {
   return (
-    <>
-      <CssBaseline />
-      <div className="app">
-        <SideBar isSidebar={isSidebar} role={'employee'} />
-        <main className="content">
-          <HeaderBar setIsSidebar={setIsSidebar} />
-          <div className="content_body">
-            <Box m="20px">
-              <Routes>
-                <Route path="/admin" element={<Dashboard />} />
-                <Route path="/admin/manage" element={<Manage />} />
-                <Route path="/admin/viewtable" element={<ContentMap />} />
-                <Route path="/" element={<Login />} />
-              </Routes>
-            </Box>
-          </div>
-        </main>
-      </div>
-    </>
-  );
-}
+    <Suspense fallback={<div>loading...</div>}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Routes>
+            <Route path="/dashboard" element={
+              <JWTGuard>
+                <RoleGuard>
+                  <Layout />
+                </RoleGuard>
+              </JWTGuard>
+            }>
+              <Route index element={<Dashboard />} />
+              <Route path="/dashboard/manage" element={<Manage />} />
+              <Route path="*" element={<p>ไม่เจอ</p>} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </PersistGate>
+      </Provider>
+    </Suspense>
 
-export default App;
+  )
+}

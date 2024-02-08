@@ -1,0 +1,14 @@
+[
+    {
+        "id": " uniqueId()",
+        "title": "Dashboard",
+        "icon": "IconReport",
+        "href": "/dashboard",
+        "type": "page",
+        "role": [
+            "admin",
+            "manager",
+            "driver"
+        ]
+    }
+]
