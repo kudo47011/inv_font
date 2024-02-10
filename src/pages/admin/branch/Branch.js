@@ -5,10 +5,14 @@ import { Button, Box, Grid } from '@mui/material'
 import PaginationBranch from '../../../components/PaginationBranch'
 import { useEffect } from 'react'
 import BranchService from '../../../service/BranchService'
+import UserService from '../../../service/UserService'
+import { setUserList } from "../../../redux/slices/users"
+import { useDispatch } from "react-redux"
 
 export default function Branch() {
   const [isOpen, setIsOpen] = useState(false)
   const [branchList, setBranchList] = useState([])
+  const dispatch = useDispatch()
 
   const handleToggle = () => {
     setIsOpen(!isOpen)
@@ -20,8 +24,15 @@ export default function Branch() {
     })
   }
 
+  const fetchUser = () => {
+    UserService.findUser().then(({ data }) => {
+      dispatch(setUserList(data))
+    })
+  }
+
   useEffect(() => {
     fetchBranch()
+    fetchUser()
   }, [])
 
   return (

@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import BranchService from '../service/BranchService'
 import Swal from "sweetalert2"
+import PopupEditBranch from "../components/PopupEditBranch"
 
 
 const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
@@ -19,6 +20,11 @@ const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
   const currentPageData = data.slice(startIndex, endIndex)
+
+  const [openModal, setOpenModal] = useState(false)
+  const [selectData, setSelectData] = useState({})
+
+
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
@@ -44,17 +50,17 @@ const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
 
   return (
     <div>
-      <TableContainer style={{boxShadow: 'none'}} className="table-container" component={Paper}>
+      <TableContainer style={{ boxShadow: 'none' }} className="table-container" component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>
+              <TableCell align="center" width={300} style={{ fontSize: 16, fontWeight: 'bold' }}>
                 ชื่อ
               </TableCell>
-              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>
+              <TableCell align="center" width={300} style={{ fontSize: 16, fontWeight: 'bold' }}>
                 ผู้จัดการสาขา
               </TableCell>
-              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>
+              <TableCell align="center" width={300} style={{ fontSize: 16, fontWeight: 'bold' }}>
                 เครื่องมือ
               </TableCell>
             </TableRow>
@@ -70,14 +76,17 @@ const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
                   {row?.manager?.firstname + ' ' + row?.manager?.lastname}
                 </TableCell>
                 <TableCell align="center">
-                  {/* <Button
+                  <Button
                     variant="contained"
                     color="info"
-                    // onClick={handleToggle(row?._id)}
+                    onClick={() => {
+                      setSelectData(row)
+                      setOpenModal(!openModal)
+                    }}
                   >
                     แก้ไขข้อมูล
-                  </Button>{' '} */}
-                  <Button variant="outlined" color="error" onClick={() => {remove(row?._id)}}>
+                  </Button>{' '}
+                  <Button variant="outlined" color="error" onClick={() => { remove(row?._id) }}>
                     ลบข้อมูล
                   </Button>
                 </TableCell>
@@ -87,13 +96,14 @@ const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
         </Table>
       </TableContainer>
       {/*Pagination component*/}
-      <div style={{display: 'flex', justifyContent: 'end'}} className="pagination-box">
+      <div style={{ display: 'flex', justifyContent: 'end' }} className="pagination-box">
         <Pagination
           count={totalPages}
           page={currentPage}
           onChange={handlePageChange}
         />
       </div>
+      <PopupEditBranch isOpen={openModal} exit={() => { setOpenModal(!openModal) }} selectData={selectData} fetch={fetch}/>
     </div>
   )
 }
