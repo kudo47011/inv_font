@@ -1,38 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import LocationBranch from '../../components/LocationBranch'
-import PaginationTransaction from '../../components/PaginationTransaction'
+import PaginationWaitingTransaction from '../../components/PaginationWaitingTransaction'
+import PaginationProgressTransaction from '../../components/PaginationInProgressTransaction'
+import PaginationSuccessTransaction from '../../components/PaginationSuccessTransaction'
 import BranchService from "../../service/BranchService"
 import TransactionService from "../../service/TransactionService"
-
-
-const people = [
-  { name: 'a', branch: 'KK', amount: 20, status: 'Waiting' },
-  { name: 'a', branch: 'BKK', amount: 15, status: 'In progress' },
-  { name: 'a', branch: 'CM', amount: 15, status: 'Success' },
-  { name: 'a', branch: 'BKK', amount: 15, status: 'Success' },
-  { name: 'a', branch: 'KK', amount: 15, status: 'Success' },
-  { name: 'a', branch: 'BKK', amount: 15, status: 'Waiting' },
-  { name: 'a', branch: 'BKK', amount: 15, status: 'In progress' },
-  { name: 'a', branch: 'CM', amount: 15, status: 'Waiting' },
-  { name: 'a', branch: 'KK', amount: 15, status: 'Waiting' },
-  { name: 'a', branch: 'CM', amount: 15, status: 'In progress' },
-  { name: 'a', branch: 'CM', amount: 15, status: 'Waiting' },
-  { name: 'a', branch: 'KK', amount: 15, status: 'Waiting' },
-  { name: 'a', branch: 'CM', amount: 15, status: 'In progress' },
-  { name: 'a', branch: 'UBON', amount: 15, status: 'Waiting' },
-  { name: 'a', branch: 'UBON', amount: 15, status: 'Waiting' },
-  { name: 'a', branch: 'UBON', amount: 15, status: 'Waiting' },
-]
 
 const itemsPerPage = 10
 
 const Dashboard = () => {
   const [branchList, setBranchList] = useState([])
   const [transactionList, setTransactionList] = useState([])
+  const [transactionProgressList, setTransactionProgressList] = useState([])
+  const [transactionSuccessList, setTransactionSuccessList] = useState([])
 
   useEffect(() => {
     fetchBranch()
     fetchTransaction()
+    fetchInprogressTransaction()
+    fetchSuccessTransaction()
   }, [])
 
   const fetchBranch = () => {
@@ -47,13 +33,27 @@ const Dashboard = () => {
     })
   }
 
+  const fetchInprogressTransaction = () => {
+    TransactionService.findInprogressTransaction().then(({ data }) => {
+      setTransactionProgressList(data)
+    })
+  }
+
+  const fetchSuccessTransaction = () => {
+    TransactionService.findSuccessTransaction().then(({ data }) => {
+      setTransactionSuccessList(data)
+    })
+  }
+
   return (
     <div>
       <LocationBranch data={branchList} />
-      <PaginationTransaction data={transactionList} fetch={() => { fetchTransaction() }} />
-      {/* <div className='pagination-box'>
-        <PaginationTransaction data={people} itemsPerPage={itemsPerPage} />
-      </div> */}
+      <br></br>
+      <PaginationWaitingTransaction data={transactionList} itemsPerPage={itemsPerPage} fetch={() => { fetchTransaction() }} fetch2={() => { fetchInprogressTransaction() }} />
+      <br></br>
+      <PaginationProgressTransaction data={transactionProgressList} itemsPerPage={itemsPerPage} fetch={() => { fetchInprogressTransaction() }} fetch2={() => { fetchSuccessTransaction() }} />
+      <br></br>
+      <PaginationSuccessTransaction data={transactionSuccessList} itemsPerPage={itemsPerPage} fetch={() => { fetchSuccessTransaction() }} />
     </div>
   )
 }

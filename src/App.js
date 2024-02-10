@@ -41,7 +41,7 @@ export default function App() {
               <Route path="/dashboard/product" element={<Product />} />
               <Route path="/dashboard/stock" element={<Stock />} />
               <Route path="/dashboard/transaction" element={<Transaction />} />
-              <Route path="/dashboard/manage" element={<Manage />} />
+              <Route path="/dashboard/branch" element={<Branch />} />
               <Route path="*" element={<p>ไม่เจอ</p>} />
             </Route>
             <Route path="/login" element={<Login />} />

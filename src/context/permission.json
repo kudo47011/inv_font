@@ -2,25 +2,29 @@
     {
         "id": " uniqueId()",
         "title": "Dashboard",
-        "icon": "IconReport",
         "href": "/dashboard",
         "type": "page",
         "role": [
-            "admin",
-            "manager",
-            "driver"
+            "admin"
+        ]
+    },
+    {
+        "id": " uniqueId()",
+        "title": "Branch",
+        "href": "/dashboard/branch",
+        "type": "page",
+        "role": [
+            "admin"
         ]
     },
     {
         "id": " uniqueId()",
         "title": "User",
-        "icon": "IconReport",
         "href": "/dashboard/user",
         "type": "page",
         "role": [
             "admin",
-            "manager",
-            "driver"
+            "manager"
         ]
     },
     {
@@ -31,8 +35,7 @@
         "type": "page",
         "role": [
             "admin",
-            "manager",
-            "driver"
+            "manager"
         ]
     },
     {
@@ -43,8 +46,7 @@
         "type": "page",
         "role": [
             "admin",
-            "manager",
-            "driver"
+            "manager"
         ]
     },
     {
@@ -54,20 +56,6 @@
         "href": "/dashboard/transaction",
         "type": "page",
         "role": [
-            "admin",
-            "manager",
-            "driver"
-        ]
-    },
-    {
-        "id": " uniqueId()",
-        "title": "Msanage",
-        "icon": "IconReport",
-        "href": "/dashboard/manage",
-        "type": "page",
-        "role": [
-            "admin",
-            "manager",
             "driver"
         ]
     }

@@ -1,4 +1,4 @@
-import { Pagination } from '@mui/material'
+import { Pagination, Button } from '@mui/material'
 import * as React from 'react'
 import { useState } from 'react'
 import Table from '@mui/material/Table'
@@ -8,11 +8,11 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import Button from '@mui/material/Button'
-import TransactionService from "../service/TransactionService"
+import BranchService from '../service/BranchService'
 import Swal from "sweetalert2"
 
-const PaginationTransaction = ({ data, itemsPerPage, fetch }) => {
+
+const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(data.length / itemsPerPage)
@@ -24,8 +24,8 @@ const PaginationTransaction = ({ data, itemsPerPage, fetch }) => {
     setCurrentPage(page)
   }
 
-  const approve = (id) => {
-    TransactionService.apperove(id).then((response) => {
+  const remove = (id) => {
+    BranchService.deleteBranch(id).then((response) => {
       Swal.fire({
         title: "ทำรายการสำเร็จ",
         icon: "success"
@@ -41,38 +41,45 @@ const PaginationTransaction = ({ data, itemsPerPage, fetch }) => {
     })
   }
 
-  
+
   return (
     <div className="box-table-pagination">
-      <TableContainer className='table-container' component={Paper}>
+      <div>รายการสาขา</div>
+      <TableContainer className="table-container" component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ชื่อผลิตภัณฑ์</TableCell>
-              <TableCell align="right" width={300}>จำนวน</TableCell>
-              <TableCell align="right" width={300}>สาขา</TableCell>
-              <TableCell align="right" width={300}>สถานะ</TableCell>
-              <TableCell align="right" width={300}>เครื่องมือ</TableCell>
+              <TableCell align="center" width={400}>
+                ชื่อ
+              </TableCell>
+              <TableCell align="center" width={400}>
+                ผู้จัดการสาขา
+              </TableCell>
+              <TableCell align="center" width={300}>
+                เครื่องมือ
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
+            {currentPageData.map((row, index) => (
               <TableRow
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
-                  {row?.product?.name}
+                <TableCell align="center">{row?.name}</TableCell>
+                <TableCell align="center">
+                  {row?.manager?.firstname + ' ' + row?.manager?.lastname}
                 </TableCell>
-                <TableCell align="right">{row?.amount}</TableCell>
-                <TableCell align="right">{row?.branch?.name}</TableCell>
-                <TableCell align="right">{row?.status}</TableCell>
-                <TableCell align="right">
-                  <Button variant="contained" color="success" disabled={row?.status != "Waiting" ? true : false} onClick={() => { approve(row?._id) }}>
-                    อนุมัติ
-                  </Button>{' '}
-                  <Button variant="outlined" color="error" disabled={row?.status != "Waiting" ? true : false}>
-                    ไม่อนุมัติ
+                <TableCell align="center">
+                  {/* <Button
+                    variant="contained"
+                    color="info"
+                    // onClick={handleToggle(row?._id)}
+                  >
+                    แก้ไขข้อมูล
+                  </Button>{' '} */}
+                  <Button variant="outlined" color="error" onClick={() => {remove(row?._id)}}>
+                    ลบข้อมูล
                   </Button>
                 </TableCell>
               </TableRow>
@@ -92,4 +99,4 @@ const PaginationTransaction = ({ data, itemsPerPage, fetch }) => {
   )
 }
 
-export default PaginationTransaction
+export default PaginationBranch

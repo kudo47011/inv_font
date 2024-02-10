@@ -32,7 +32,13 @@ const Login = () => {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("expired", decoded?.exp);
       dispatch(setAuthentication(user))
-      navigate('/dashboard')
+      if (user?.role == 'admin') {
+        navigate('/dashboard')
+      } else if (user?.role == 'manager') {
+        navigate('/dashboard')
+      } else if (user?.role == 'driver') {
+        navigate('/dashboard/transaction')
+      }
     }).catch((error) => {
       Swal.fire({
         title: 'Error!',
