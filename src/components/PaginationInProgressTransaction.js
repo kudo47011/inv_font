@@ -9,11 +9,16 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
-import TransactionService from "../service/TransactionService"
-import Swal from "sweetalert2"
+import TransactionService from '../service/TransactionService'
+import Swal from 'sweetalert2'
 import Moment from 'react-moment'
 
-const PaginationProgressTransaction = ({ data, itemsPerPage, fetch, fetch2 }) => {
+const PaginationProgressTransaction = ({
+  data,
+  itemsPerPage,
+  fetch,
+  fetch2,
+}) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(data.length / itemsPerPage)
@@ -26,39 +31,87 @@ const PaginationProgressTransaction = ({ data, itemsPerPage, fetch, fetch2 }) =>
   }
 
   const success = (id) => {
-    TransactionService.success(id).then((response) => {
-      Swal.fire({
-        title: "ทำรายการสำเร็จ",
-        icon: "success"
-      });
-      fetch()
-      fetch2();
-    }).catch((error) => {
-      Swal.fire({
-        title: 'Error!',
-        text: `${error?.response?.data?.message}`,
-        icon: 'error',
-        confirmButtonText: 'Cool'
+    TransactionService.success(id)
+      .then((response) => {
+        Swal.fire({
+          title: 'ทำรายการสำเร็จ',
+          icon: 'success',
+        })
+        fetch()
+        fetch2()
       })
-    })
+      .catch((error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: `${error?.response?.data?.message}`,
+          icon: 'error',
+          confirmButtonText: 'Cool',
+        })
+      })
   }
 
   return (
-    <div className="box-table-pagination">
-      <div>
+    <div>
+      <div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: '7px' }}>
         รายการสินค้าที่กำลังดำเนินการ
       </div>
-      <TableContainer className='table-container' component={Paper}>
+      <TableContainer
+        className="table-container"
+        style={{ boxShadow: 'none' }}
+        component={Paper}
+      >
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ชื่อผลิตภัณฑ์</TableCell>
-              <TableCell align="center" width={300}>จำนวน</TableCell>
-              <TableCell align="center" width={300}>สาขา</TableCell>
-              <TableCell align="center" width={300}>สถานะ</TableCell>
-              <TableCell align="center" width={300}>ผู้ทำรายการ</TableCell>
-              <TableCell align="center" width={300}>เวลา</TableCell>
-              <TableCell align="center" width={300}>เครื่องมือ</TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                ชื่อผลิตภัณฑ์
+              </TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                จำนวน
+              </TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                สาขา
+              </TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                สถานะ
+              </TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                ผู้ทำรายการ
+              </TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                เวลา
+              </TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                เครื่องมือ
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -67,18 +120,27 @@ const PaginationProgressTransaction = ({ data, itemsPerPage, fetch, fetch2 }) =>
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell component="th" scope="row" align="center">
                   {row?.product?.name}
                 </TableCell>
                 <TableCell align="center">{row?.amount}</TableCell>
                 <TableCell align="center">{row?.branch?.name}</TableCell>
-                <TableCell align="center">{"กำลังดำเนินการ"}</TableCell>
-                <TableCell align="center">{row?.user_created?.username}</TableCell>
+                <TableCell align="center">{'กำลังดำเนินการ'}</TableCell>
+                <TableCell align="center">
+                  {row?.user_created?.username}
+                </TableCell>
                 <TableCell align="center">
                   <Moment format="YYYY/MM/DD HH:MM:ss">{row?.updatedAt}</Moment>
                 </TableCell>
                 <TableCell align="center">
-                  <Button variant="contained" color="success" disabled={row?.status != "In progress" ? true : false} onClick={() => { success(row?._id) }}>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    disabled={row?.status != 'In progress' ? true : false}
+                    onClick={() => {
+                      success(row?._id)
+                    }}
+                  >
                     ดำเนินการเสร็จสิ้น
                   </Button>{' '}
                 </TableCell>
@@ -87,8 +149,10 @@ const PaginationProgressTransaction = ({ data, itemsPerPage, fetch, fetch2 }) =>
           </TableBody>
         </Table>
       </TableContainer>
-      {/*Pagination component*/}
-      <div className="pagination-box">
+      <div
+        style={{ display: 'flex', justifyContent: 'end' }}
+        className="pagination-box"
+      >
         <Pagination
           count={totalPages}
           page={currentPage}

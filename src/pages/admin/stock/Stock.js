@@ -15,12 +15,17 @@ export default function Stock() {
     })
   }
 
+  const xxx = (data) => {
+    console.log(data)
+  }
   return (
     <div>
       {
-        branchList.map((item, index) => {
-          <Button variant="contained">{item.name}</Button>
-        })
+        branchList.map((item, index) => 
+          (
+            <Button key={index} variant="contained" onClick={() => {xxx(item)}}>{item.name}</Button>
+          )
+        )
       }
     </div>
   )

@@ -43,19 +43,18 @@ const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
 
 
   return (
-    <div className="box-table-pagination">
-      <div>รายการสาขา</div>
-      <TableContainer className="table-container" component={Paper}>
+    <div>
+      <TableContainer style={{boxShadow: 'none'}} className="table-container" component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center" width={400}>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>
                 ชื่อ
               </TableCell>
-              <TableCell align="center" width={400}>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>
                 ผู้จัดการสาขา
               </TableCell>
-              <TableCell align="center" width={300}>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>
                 เครื่องมือ
               </TableCell>
             </TableRow>
@@ -88,7 +87,7 @@ const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
         </Table>
       </TableContainer>
       {/*Pagination component*/}
-      <div className="pagination-box">
+      <div style={{display: 'flex', justifyContent: 'end'}} className="pagination-box">
         <Pagination
           count={totalPages}
           page={currentPage}

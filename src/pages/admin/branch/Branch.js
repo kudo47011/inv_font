@@ -1,7 +1,7 @@
 import React from 'react'
 import PopupBranch from '../../../components/PopupCreateBranch'
 import { useState } from 'react'
-import { Button, Box } from '@mui/material'
+import { Button, Box, Grid } from '@mui/material'
 import PaginationBranch from '../../../components/PaginationBranch'
 import { useEffect } from 'react'
 import BranchService from '../../../service/BranchService'
@@ -24,16 +24,30 @@ export default function Branch() {
     fetchBranch()
   }, [])
 
-
   return (
     <div>
-      <Box sx={{ flexDirection: 'row-reverse', mb: 2 }}>
-        <Button variant="contained" onClick={handleToggle}>
-          เพิ่มสาขา
-        </Button>
-      </Box>
+      <Grid container spacing={2} style={{ marginBottom: '7px' }}>
+        <Grid xs={6} item>
+          <div
+            style={{ fontSize: 20, fontWeight: 'bold', marginBottom: '7px' }}
+          >
+            รายการสาขา
+          </div>
+        </Grid>
+        <Grid xs={6} style={{ display: 'flex', justifyContent: 'end' }} item>
+          <Button variant="contained" onClick={handleToggle}>
+            เพิ่มสาขา
+          </Button>
+        </Grid>
+      </Grid>
       {isOpen && <PopupBranch isOpen={isOpen} onClose={handleToggle} />}
-      <PaginationBranch data={branchList} itemsPerPage={10} fetch={() => {fetchBranch()}}/>
+      <PaginationBranch
+        data={branchList}
+        itemsPerPage={10}
+        fetch={() => {
+          fetchBranch()
+        }}
+      />
     </div>
   )
 }

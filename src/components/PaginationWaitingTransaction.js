@@ -1,4 +1,4 @@
-import { Pagination } from '@mui/material'
+import { Grid, Pagination } from '@mui/material'
 import * as React from 'react'
 import { useState } from 'react'
 import Table from '@mui/material/Table'
@@ -62,21 +62,21 @@ const PaginationWaitingTransaction = ({ data, itemsPerPage, fetch, fetch2 }) => 
 
   
   return (
-    <div className="box-table-pagination">
-      <div>
+    <div >
+      <div style={{fontSize: 20, fontWeight: 'bold', marginBottom: '7px'}}>
         รายการคำขอเพิ่มสินค้า
       </div>
-      <TableContainer className='table-container' component={Paper}>
+      <TableContainer className='table-container' style={{boxShadow: 'none'}} component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ชื่อผลิตภัณฑ์</TableCell>
-              <TableCell align="center" width={300}>จำนวน</TableCell>
-              <TableCell align="center" width={300}>สาขา</TableCell>
-              <TableCell align="center" width={300}>สถานะ</TableCell>
-              <TableCell align="center" width={300}>ผู้ทำรายการ</TableCell>
-              <TableCell align="center" width={300}>เวลา</TableCell>
-              <TableCell align="center" width={300}>เครื่องมือ</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}} >ชื่อผลิตภัณฑ์</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>จำนวน</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>สาขา</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>สถานะ</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>ผู้ทำรายการ</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>เวลา</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>เครื่องมือ</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -108,8 +108,7 @@ const PaginationWaitingTransaction = ({ data, itemsPerPage, fetch, fetch2 }) => 
           </TableBody>
         </Table>
       </TableContainer>
-      {/*Pagination component*/}
-      <div className="pagination-box">
+      <div style={{display:'flex', justifyContent: 'end'}} className="pagination-box">
         <Pagination
           count={totalPages}
           page={currentPage}
