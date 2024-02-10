@@ -79,6 +79,15 @@ const PopupBranch = ({ isOpen, onClose }) => {
       })
   }
 
+  const test = ()=>{
+    Swal.fire({
+      title: 'Error!',
+      text: `555`,
+      icon: 'error',
+      confirmButtonText: 'Cool',
+    })
+  }
+
   return (
     <Dialog
       open={isOpen}

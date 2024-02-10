@@ -37,9 +37,7 @@ export default function PopupEditBranch({ isOpen, exit, selectData, fetch }) {
         })
     }
 
-
     return (
-
         <div>
             <Dialog
                 open={isOpen}
