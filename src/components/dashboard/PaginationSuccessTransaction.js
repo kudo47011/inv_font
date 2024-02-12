@@ -75,7 +75,14 @@ const PaginationSuccessTransaction = ({ data, itemsPerPage }) => {
                 width={300}
                 style={{ fontSize: 16, fontWeight: 'bold' }}
               >
-                อัพเดตล่าสุด
+                เวลาเริ่ม
+              </TableCell>
+              <TableCell
+                align="center"
+                width={300}
+                style={{ fontSize: 16, fontWeight: 'bold' }}
+              >
+                เวลาจบ
               </TableCell>
             </TableRow>
           </TableHead>
@@ -93,6 +100,9 @@ const PaginationSuccessTransaction = ({ data, itemsPerPage }) => {
                 <TableCell align="center" style={{ fontWeight: 'bold', color: 'green' }}>เสร็จสิ้น</TableCell>
                 <TableCell align="center">
                   {row?.user_created?.username}
+                </TableCell>
+                <TableCell align="center">
+                  <Moment format="YYYY/MM/DD HH:mm:ss">{row?.createdAt}</Moment>
                 </TableCell>
                 <TableCell align="center">
                   <Moment format="YYYY/MM/DD HH:mm:ss">{row?.updatedAt}</Moment>

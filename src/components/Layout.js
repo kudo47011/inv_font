@@ -44,6 +44,8 @@ import io from 'socket.io-client'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import NotificationSound from '../assets/sound/noti-sound.mp3'
+
 const drawerWidth = 240
 
 const openedMixin = (theme) => ({
@@ -133,11 +135,17 @@ export default function MiniDrawer() {
     setOpen(false)
   }
 
+  const playSound = () => {
+    const audio = new Audio(NotificationSound);
+    audio.play();
+  };
+
   useEffect(() => {
     const socket = io(`${process.env.REACT_APP_ENDPOINT}`) // Replace with your server URL
 
     // Event listener for receiving messages from the server
     socket.on('transaction', (data) => {
+      playSound();
       switch (data) {
         case 'add':
           toast.success('ทำรายการขนส่งเสร็จสิ้น', {
