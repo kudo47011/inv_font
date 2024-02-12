@@ -68,7 +68,7 @@ const PaginationProgressTransaction = ({
   return (
     <div>
       <div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: '7px' }}>
-        รายการสินค้าที่กำลังดำเนินการ
+        รายการสินค้าที่ต้องจัดส่ง
       </div>
       <TableContainer
         className="table-container"
