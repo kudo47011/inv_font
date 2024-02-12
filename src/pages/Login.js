@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
-import { TextField, Button, Grid, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AuthService from '../service/AuthService';
-import { setAuthentication } from "../redux/slices/users"
-import { jwtDecode } from "jwt-decode";
-import Swal from "sweetalert2"
-import { useNavigate } from "react-router-dom"
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { TextField, Button, Grid, Typography } from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import AuthService from '../service/AuthService'
+import { setAuthentication } from '../redux/slices/users'
+import { jwtDecode } from 'jwt-decode'
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom'
+import Avatar from '@mui/material/Avatar'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 
-const theme = createTheme();
+const theme = createTheme()
 
 const initialForm = {
-  username: "",
-  password: ""
+  username: '',
+  password: '',
 }
 
 const Login = () => {
@@ -26,38 +28,50 @@ const Login = () => {
   }
 
   const handleSubmit = (e) => {
-    AuthService.login(form).then(({ data }) => {
-      let { token, user } = data
-      const decoded = jwtDecode(token);
-      localStorage.setItem("accessToken", token);
-      localStorage.setItem("expired", decoded?.exp);
-      dispatch(setAuthentication(user))
-      if (user?.role == 'admin') {
-        navigate('/dashboard')
-      } else if (user?.role == 'manager') {
-        navigate('/dashboard/stock')
-      } else if (user?.role == 'driver') {
-        navigate('/dashboard/transaction')
-      }
-    }).catch((error) => {
-      Swal.fire({
-        title: 'Error!',
-        text: `${error?.response?.data?.message}`,
-        icon: 'error',
-        confirmButtonText: 'Cool'
+    AuthService.login(form)
+      .then(({ data }) => {
+        let { token, user } = data
+        const decoded = jwtDecode(token)
+        localStorage.setItem('accessToken', token)
+        localStorage.setItem('expired', decoded?.exp)
+        dispatch(setAuthentication(user))
+        if (user?.role == 'admin') {
+          navigate('/dashboard')
+        } else if (user?.role == 'manager') {
+          navigate('/dashboard/stock')
+        } else if (user?.role == 'driver') {
+          navigate('/dashboard/transaction')
+        }
       })
-    })
-  };
+      .catch((error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: `${error?.response?.data?.message}`,
+          icon: 'error',
+          confirmButtonText: 'Cool',
+        })
+      })
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        style={{ minHeight: '80vh' }}
+      >
         <Grid item xs={12} sm={6} md={4}>
+          <div style={{display: 'flex', justifyContent:'center'}}>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main'  }}>
+              <LockOutlinedIcon />
+            </Avatar>
+          </div>
           <Typography variant="h4" component="h1" align="center" gutterBottom>
             Login
           </Typography>
           <TextField
-            label="Email"
+            label="Username"
             variant="outlined"
             name="username"
             value={form?.username}
@@ -69,19 +83,25 @@ const Login = () => {
             label="Password"
             variant="outlined"
             type="password"
-            name='password'
+            name="password"
             value={form?.password}
             onChange={handleForm}
             fullWidth
             margin="normal"
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth onClick={handleSubmit}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleSubmit}
+          >
             Login
           </Button>
         </Grid>
       </Grid>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
