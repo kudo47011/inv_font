@@ -253,6 +253,8 @@ export default function MiniDrawer() {
                       <CategoryIcon />
                     ) : item?.title === 'รายการเพิ่มสินค้า' ? (
                       <DescriptionRoundedIcon />
+                    ) : item?.title === 'ประวัติการจัดส่ง' ? (
+                      <DescriptionRoundedIcon />
                     ) : (
                       ''
                     )}
@@ -266,6 +268,7 @@ export default function MiniDrawer() {
             ) : null
           })}
           <ListItemButton
+            className="logout-btn"
             sx={{
               minHeight: 48,
               justifyContent: open ? 'initial' : 'center',

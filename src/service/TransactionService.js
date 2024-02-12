@@ -10,6 +10,7 @@ const ENDPOINT = {
     APPROVE: (id) => `${process.env.REACT_APP_ENDPOINT}/transaction/${id}`,
     CANCEL: (id) => `${process.env.REACT_APP_ENDPOINT}/transaction/${id}`,
     REQUEST: `${process.env.REACT_APP_ENDPOINT}/transaction/`,
+    FIND_DRIVER_HISTORY: `${process.env.REACT_APP_ENDPOINT}/transaction/history`,
   },
 }
 
@@ -23,6 +24,16 @@ const TransactionService = {
       },
       url: ENDPOINT.TRANSACTION.REQUEST,
       data,
+    })
+  },
+  findDriverHistory: () => {
+    return axios({
+      method: 'GET',
+      headers: {
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${getStorage('accessToken')}`,
+      },
+      url: ENDPOINT.TRANSACTION.FIND_DRIVER_HISTORY,
     })
   },
   findAllMyTransaction: (id) => {

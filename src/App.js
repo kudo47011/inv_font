@@ -11,7 +11,6 @@ import RoleGuard from './guard/RoleGuard'
 
 /// Page
 import Dashboard from './pages/admin/Dashboard'
-import Manage from './pages/admin/Manage'
 import Login from './pages/Login'
 import Layout from './components/Layout'
 import Branch from './pages/admin/branch/Branch'
@@ -20,6 +19,7 @@ import Product from './pages/admin/product/Product'
 import Stock from './pages/admin/stock/Stock'
 import Transaction from './pages/admin/transaction/Transaction'
 import TransactionManager from './pages/admin/transaction/TransactionManager'
+import DriverHistory from './pages/admin/driver_history/DriverHistory'
 
 ///MUI
 import { createTheme } from '@mui/material/styles'
@@ -62,6 +62,10 @@ export default function App() {
                 <Route
                   path="/dashboard/transaction-manager"
                   element={<TransactionManager />}
+                />
+                <Route
+                  path="/dashboard/transaction-history"
+                  element={<DriverHistory />}
                 />
                 <Route path="/dashboard/branch" element={<Branch />} />
                 <Route path="*" element={<p>ไม่เจอ</p>} />

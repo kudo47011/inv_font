@@ -28,8 +28,16 @@ const Dashboard = () => {
     // Event listener for receiving messages from the server
     socket.on('transaction', (data) => {
       switch (data) {
+        case 'approve':
+          fetchTransaction()
+          fetchInprogressTransaction()
+          break
         case 'request':
           fetchTransaction()
+          break
+        case 'add':
+          fetchInprogressTransaction()
+          fetchSuccessTransaction()
           break
       }
     })
