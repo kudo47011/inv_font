@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Moment from 'react-moment'
 
-const PaginationSuccessTransaction = ({ data, itemsPerPage }) => {
+const PaginationAllMyTransaction = ({ data, itemsPerPage }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(data.length / itemsPerPage)
@@ -25,7 +25,7 @@ const PaginationSuccessTransaction = ({ data, itemsPerPage }) => {
   return (
     <div>
       <div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: '7px' }}>
-        รายการที่ทำรายการสำเร็จแล้ว
+        รายการเพิ่มสินค้า
       </div>
       <TableContainer
         className="table-container"
@@ -75,7 +75,7 @@ const PaginationSuccessTransaction = ({ data, itemsPerPage }) => {
                 width={300}
                 style={{ fontSize: 16, fontWeight: 'bold' }}
               >
-                เวลา
+                อัพเดตล่าสุด
               </TableCell>
             </TableRow>
           </TableHead>
@@ -90,19 +90,53 @@ const PaginationSuccessTransaction = ({ data, itemsPerPage }) => {
                 </TableCell>
                 <TableCell align="center">{row?.amount}</TableCell>
                 <TableCell align="center">{row?.branch?.name}</TableCell>
-                <TableCell align="center">{'กำลังดำเนินการ'}</TableCell>
+                {row?.status == 'Success' && (
+                  <TableCell
+                    align="center"
+                    style={{ fontWeight: 'bold', color: 'green' }}
+                  >
+                    สำเร็จ
+                  </TableCell>
+                )}
+                {row?.status == 'In progress' && (
+                  <TableCell
+                    align="center"
+                    style={{ fontWeight: 'bold', color: '#CC6600' }}
+                  >
+                    กำลังดำเนินการ
+                  </TableCell>
+                )}
+                {row?.status == 'Waiting' && (
+                  <TableCell
+                    align="center"
+                    style={{ fontWeight: 'bold' }}
+                  >
+                    รอการอนุมัติ
+                  </TableCell>
+                )}
+                {row?.status == 'Cancel' && (
+                  <TableCell
+                    align="center"
+                    style={{ fontWeight: 'bold', color: 'red' }}
+                  >
+                    ยกเลิก
+                  </TableCell>
+                )}
                 <TableCell align="center">
                   {row?.user_created?.username}
                 </TableCell>
                 <TableCell align="center">
-                  <Moment format="YYYY/MM/DD HH:MM:ss">{row?.updatedAt}</Moment>
+                  <Moment format="YYYY/MM/DD HH:mm:ss">{row?.updatedAt}</Moment>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <div style={{display: 'flex', justifyContent: 'end'}} className="pagination-box">
+      <div
+        style={{ display: 'flex', justifyContent: 'end' }}
+        className="pagination-box"
+      >
         <Pagination
           count={totalPages}
           page={currentPage}
@@ -113,4 +147,4 @@ const PaginationSuccessTransaction = ({ data, itemsPerPage }) => {
   )
 }
 
-export default PaginationSuccessTransaction
+export default PaginationAllMyTransaction

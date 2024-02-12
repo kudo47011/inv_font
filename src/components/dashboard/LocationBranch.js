@@ -19,7 +19,6 @@ const Marker = ({ lat, lng, branch }) => {
 }
 
 const LocationBranch = ({data}) => {
-//   const Marker = ({ text }) => <div className="marker">📍{text}</div>
   const defaultProps = {
     center: {
       lat: 15.225245,
@@ -30,12 +29,12 @@ const LocationBranch = ({data}) => {
 
   return (
     // Important! Always set the container height explicitly
-    <div style={{ height: '50vh', width: '100%' }}>
+    <div style={{ height: '50vh', width: '100%' }} className='map-font'>
       <GoogleMapReact
         bootstrapURLKeys={{ key: 'AIzaSyB80nEBblSL_qgiXUpLciZxrZfHTjA5CSw' }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
-        draggable={false}
+        draggable={true}
       >
         {data.map((position, index) => (
           <Marker

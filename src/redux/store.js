@@ -3,6 +3,8 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import usersReducer from "./slices/users";
+import branchReducer from "./slices/branchs";
+import reportReducer from "./slices/report";
 
 const persistConfig = {
     key: 'root',
@@ -11,6 +13,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     users: usersReducer,
+    branchs: branchReducer,
+    report: reportReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

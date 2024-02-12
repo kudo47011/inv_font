@@ -1,4 +1,4 @@
-import { Pagination } from '@mui/material'
+import { Pagination, Button, IconButton } from '@mui/material'
 import * as React from 'react'
 import { useState } from 'react'
 import Table from '@mui/material/Table'
@@ -8,17 +8,14 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import Button from '@mui/material/Button'
-import TransactionService from '../service/TransactionService'
+import BranchService from '../../service/BranchService'
 import Swal from 'sweetalert2'
-import Moment from 'react-moment'
+import PopupEditBranch from '../branch/PopupEditBranch'
 
-const PaginationProgressTransaction = ({
-  data,
-  itemsPerPage,
-  fetch,
-  fetch2,
-}) => {
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+
+const PaginationBranch = ({ data, itemsPerPage, fetch }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(data.length / itemsPerPage)
@@ -26,19 +23,21 @@ const PaginationProgressTransaction = ({
   const endIndex = startIndex + itemsPerPage
   const currentPageData = data.slice(startIndex, endIndex)
 
+  const [openModal, setOpenModal] = useState(false)
+  const [selectData, setSelectData] = useState({})
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
   }
 
-  const success = (id) => {
-    TransactionService.success(id)
+  const remove = (id) => {
+    BranchService.deleteBranch(id)
       .then((response) => {
         Swal.fire({
           title: 'ทำรายการสำเร็จ',
           icon: 'success',
         })
         fetch()
-        fetch2()
       })
       .catch((error) => {
         Swal.fire({
@@ -52,12 +51,9 @@ const PaginationProgressTransaction = ({
 
   return (
     <div>
-      <div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: '7px' }}>
-        รายการสินค้าที่กำลังดำเนินการ
-      </div>
       <TableContainer
-        className="table-container"
         style={{ boxShadow: 'none' }}
+        className="table-container"
         component={Paper}
       >
         <Table>
@@ -68,42 +64,14 @@ const PaginationProgressTransaction = ({
                 width={300}
                 style={{ fontSize: 16, fontWeight: 'bold' }}
               >
-                ชื่อผลิตภัณฑ์
+                ชื่อ
               </TableCell>
               <TableCell
                 align="center"
                 width={300}
                 style={{ fontSize: 16, fontWeight: 'bold' }}
               >
-                จำนวน
-              </TableCell>
-              <TableCell
-                align="center"
-                width={300}
-                style={{ fontSize: 16, fontWeight: 'bold' }}
-              >
-                สาขา
-              </TableCell>
-              <TableCell
-                align="center"
-                width={300}
-                style={{ fontSize: 16, fontWeight: 'bold' }}
-              >
-                สถานะ
-              </TableCell>
-              <TableCell
-                align="center"
-                width={300}
-                style={{ fontSize: 16, fontWeight: 'bold' }}
-              >
-                ผู้ทำรายการ
-              </TableCell>
-              <TableCell
-                align="center"
-                width={300}
-                style={{ fontSize: 16, fontWeight: 'bold' }}
-              >
-                เวลา
+                ผู้จัดการสาขา
               </TableCell>
               <TableCell
                 align="center"
@@ -120,35 +88,38 @@ const PaginationProgressTransaction = ({
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row" align="center">
-                  {row?.product?.name}
-                </TableCell>
-                <TableCell align="center">{row?.amount}</TableCell>
-                <TableCell align="center">{row?.branch?.name}</TableCell>
-                <TableCell align="center">{'กำลังดำเนินการ'}</TableCell>
+                <TableCell align="center">{row?.name}</TableCell>
                 <TableCell align="center">
-                  {row?.user_created?.username}
+                  {row?.manager?.firstname + ' ' + row?.manager?.lastname}
                 </TableCell>
                 <TableCell align="center">
-                  <Moment format="YYYY/MM/DD HH:MM:ss">{row?.updatedAt}</Moment>
-                </TableCell>
-                <TableCell align="center">
-                  <Button
+                  <IconButton 
+                    style={{marginRight: '7px'}}
                     variant="contained"
-                    color="success"
-                    disabled={row?.status != 'In progress' ? true : false}
+                    color="warning"
                     onClick={() => {
-                      success(row?._id)
+                      setSelectData(row)
+                      setOpenModal(!openModal)
                     }}
                   >
-                    ดำเนินการเสร็จสิ้น
-                  </Button>{' '}
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      remove(row?._id)
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {/*Pagination component*/}
       <div
         style={{ display: 'flex', justifyContent: 'end' }}
         className="pagination-box"
@@ -159,8 +130,16 @@ const PaginationProgressTransaction = ({
           onChange={handlePageChange}
         />
       </div>
+      <PopupEditBranch
+        isOpen={openModal}
+        exit={() => {
+          setOpenModal(!openModal)
+        }}
+        selectData={selectData}
+        fetch={fetch}
+      />
     </div>
   )
 }
 
-export default PaginationProgressTransaction
+export default PaginationBranch

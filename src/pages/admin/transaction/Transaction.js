@@ -1,4 +1,4 @@
-import PaginationProgressTransaction from '../../../components/PaginationInProgressTransaction'
+import PaginationProgressTransaction from '../../../components/dashboard/PaginationInProgressTransaction'
 import React, { useState, useEffect } from 'react'
 import TransactionService from '../../../service/TransactionService'
 
@@ -12,13 +12,13 @@ export default function Transaction() {
   }, [])
 
   const fetchInprogressTransaction = () => {
-    TransactionService.findTransaction().then(({ data }) => {
+    TransactionService.findInprogressTransaction().then(({ data }) => {
       setTransactionProgressList(data)
     })
   }
 
   return (
-    <div className='xxx'>
+    <div>
       <PaginationProgressTransaction data={transactionProgressList} itemsPerPage={itemsPerPage} fetch={() => { fetchInprogressTransaction() }} />
     </div>
   )

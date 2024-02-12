@@ -35,7 +35,7 @@ const Login = () => {
       if (user?.role == 'admin') {
         navigate('/dashboard')
       } else if (user?.role == 'manager') {
-        navigate('/dashboard')
+        navigate('/dashboard/stock')
       } else if (user?.role == 'driver') {
         navigate('/dashboard/transaction')
       }

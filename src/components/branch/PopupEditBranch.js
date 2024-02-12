@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from "react-redux";
 import GoogleMapReact from 'google-map-react'
 import { Button, Dialog, DialogContent, DialogTitle, DialogActions, Grid, TextField, MenuItem, FormControl, InputLabel, Select, Box } from '@mui/material';
-import BranchService from '../service/BranchService';
+import BranchService from '../../service/BranchService';
 
 const initialState = {
     _id: "",
@@ -28,7 +28,7 @@ export default function PopupEditBranch({ isOpen, exit, selectData, fetch }) {
         setForm({ ...form, [name]: value })
     }
 
-    const AnyReactComponent = ({ text }) => <div>📍{text}</div>;
+    const Marker = ({ text }) => <div>📍{text}</div>;
 
     const updateBranch = () => {
         BranchService.updateBranch(form?._id, form).then(() => {
@@ -62,7 +62,7 @@ export default function PopupEditBranch({ isOpen, exit, selectData, fetch }) {
                                     draggable={true}
                                     onClick={(e) => { setForm({ ...form, lat: e?.lat, lng: e?.lng }) }}
                                 >
-                                    <AnyReactComponent
+                                    <Marker
                                         lat={form?.lat || 0}
                                         lng={form?.lng || 0}
                                         text="ตำแหน่งปัจจุบัน"

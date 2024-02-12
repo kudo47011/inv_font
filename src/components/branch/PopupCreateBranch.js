@@ -1,24 +1,11 @@
 import React from 'react'
-import {
-  Modal,
-  Box,
-  Typography,
-  Grid,
-  Button,
-  Select,
-  MenuItem,
-  TextField,
-  Dialog,
-} from '@mui/material'
-import UserService from '../service/UserService'
+import { Button, Dialog, DialogContent, DialogTitle, DialogActions, Grid, TextField, MenuItem, FormControl, InputLabel, Select, Box } from '@mui/material';
+import GoogleMapReact from 'google-map-react'
+
+import UserService from '../../service/UserService'
 import { useState, useEffect } from 'react'
-import BranchService from '../service/BranchService'
-import { useNavigate } from 'react-router-dom'
+import BranchService from '../../service/BranchService'
 import Swal from 'sweetalert2'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
 
 const style = {
   position: 'absolute',
@@ -39,10 +26,9 @@ const initialForm = {
   lng: 0,
 }
 
-const PopupBranch = ({ isOpen, onClose }) => {
-  const [userList, setUserList] = useState([])
+const PopupBranch = ({ isOpen, onClose, fetchBranch }) => {
+  const [usersList, setUserList] = useState([])
   const [form, setForm] = useState(initialForm)
-  const navigate = useNavigate()
 
   const fetchUser = () => {
     UserService.findUser().then(({ data }) => {
@@ -50,14 +36,9 @@ const PopupBranch = ({ isOpen, onClose }) => {
     })
   }
 
-  const handleSelectChange = (event) => {
-    setForm({ ...form, manager: event.target.value })
-  }
-
   const handleForm = (e) => {
     let { name, value } = e.target
     setForm({ ...form, [name]: value })
-    console.log(form)
   }
 
   useEffect(() => {
@@ -67,7 +48,14 @@ const PopupBranch = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     BranchService.createBranch(form)
       .then(({ data }) => {
+        Swal.fire({
+          title: 'สำเร็จ',
+          text: `บันทึกรายการสำเร็จ`,
+          icon: 'success',
+          confirmButtonText: 'Cool',
+        })
         onClose()
+        fetchBranch()
       })
       .catch((error) => {
         Swal.fire({
@@ -79,48 +67,84 @@ const PopupBranch = ({ isOpen, onClose }) => {
       })
   }
 
-  const test = ()=>{
-    Swal.fire({
-      title: 'Error!',
-      text: `555`,
-      icon: 'error',
-      confirmButtonText: 'Cool',
-    })
+  const defaultProps = {
+    center: {
+      lat: 15.225245,
+      lng: 101.514008,
+    },
+    zoom: 6,
   }
 
+  const Marker = ({ text }) => <div>📍{text}</div>;
+
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event) => {
-          event.preventDefault()
-          const formData = new FormData(event.currentTarget)
-          const formJson = Object.fromEntries(formData.entries())
-          const email = formJson.email
-          console.log(email)
-          onClose()
-        },
-      }}
-    >
-      <DialogTitle>เพิ่มสาขา</DialogTitle>
+    <Dialog open={isOpen} onClose={onClose} fullWidth>
+      <DialogTitle>เพิ่มข้อมูลสาขา</DialogTitle>
       <DialogContent>
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="name"
-          name="email"
-          label="Email Address"
-          type="email"
-          fullWidth
-          variant="standard"
-        />
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          <Grid item xs={12} md={12}>
+            <Box sx={{ height: '50vh', width: '100%' }}>
+              <GoogleMapReact
+                bootstrapURLKeys={{
+                  key: 'AIzaSyB80nEBblSL_qgiXUpLciZxrZfHTjA5CSw',
+                }}
+                defaultCenter={{
+                  lat: defaultProps?.center?.lat,
+                  lng: defaultProps?.center?.lng,
+                }}
+                defaultZoom={defaultProps.zoom}
+                draggable={true}
+                onClick={(e) => {
+                  setForm({ ...form, lat: e?.lat, lng: e?.lng })
+                }}
+              >
+                <Marker
+                  lat={form?.lat || 0}
+                  lng={form?.lng || 0}
+                  text="ตำแหน่งปัจจุบัน"
+                />
+              </GoogleMapReact>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <TextField
+              name="name"
+              label="ชื่อสาขา"
+              variant="outlined"
+              fullWidth
+              value={form?.name}
+              onChange={handleForm}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <FormControl fullWidth>
+              <InputLabel>ผู้จัดการสาขา</InputLabel>
+              <Select
+                name="manager"
+                value={form?.manager}
+                label="ผู้จัดการสาขา"
+                onChange={handleForm}
+              >
+                {usersList?.map((item, idx) => {
+                  return (
+                    <MenuItem
+                      value={item?._id}
+                      key={idx}
+                    >{`${item?.firstname} ${item?.lastname}`}</MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit">Subscribe</Button>
+        <Button onClick={onClose} variant="contained" color='error'>
+          ยกเลิก
+        </Button>
+        <Button autoFocus variant="contained" color='success' onClick={handleSubmit}>
+          บันทึกรายการ
+        </Button>
       </DialogActions>
     </Dialog>
     // <Modal

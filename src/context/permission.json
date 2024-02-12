@@ -10,7 +10,7 @@
     },
     {
         "id": " uniqueId()",
-        "title": "Branch",
+        "title": "สาขา",
         "href": "/dashboard/branch",
         "type": "page",
         "role": [
@@ -19,7 +19,7 @@
     },
     {
         "id": " uniqueId()",
-        "title": "User",
+        "title": "ผู้ใช้งานระบบ",
         "href": "/dashboard/user",
         "type": "page",
         "role": [
@@ -29,8 +29,7 @@
     },
     {
         "id": " uniqueId()",
-        "title": "Product",
-        "icon": "IconReport",
+        "title": "สินค้า",
         "href": "/dashboard/product",
         "type": "page",
         "role": [
@@ -40,8 +39,7 @@
     },
     {
         "id": " uniqueId()",
-        "title": "Stock",
-        "icon": "IconReport",
+        "title": "คลังสินค้า",
         "href": "/dashboard/stock",
         "type": "page",
         "role": [
@@ -51,12 +49,20 @@
     },
     {
         "id": " uniqueId()",
-        "title": "Transaction",
-        "icon": "IconReport",
+        "title": "รายการสินค้า",
         "href": "/dashboard/transaction",
         "type": "page",
         "role": [
             "driver"
+        ]
+    },
+    {
+        "id": " uniqueId()",
+        "title": "รายการเพิ่มสินค้า",
+        "href": "/dashboard/transaction-manager",
+        "type": "page",
+        "role": [
+            "manager"
         ]
     }
 ]

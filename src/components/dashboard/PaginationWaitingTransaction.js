@@ -1,4 +1,4 @@
-import { Grid, Pagination } from '@mui/material'
+import { Grid, IconButton, Pagination } from '@mui/material'
 import * as React from 'react'
 import { useState } from 'react'
 import Table from '@mui/material/Table'
@@ -9,9 +9,12 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
-import TransactionService from "../service/TransactionService"
+import TransactionService from "../../service/TransactionService"
 import Swal from "sweetalert2"
 import Moment from 'react-moment'
+
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 
 const PaginationWaitingTransaction = ({ data, itemsPerPage, fetch, fetch2 }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -75,7 +78,7 @@ const PaginationWaitingTransaction = ({ data, itemsPerPage, fetch, fetch2 }) => 
               <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>สาขา</TableCell>
               <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>สถานะ</TableCell>
               <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>ผู้ทำรายการ</TableCell>
-              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>เวลา</TableCell>
+              <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>อัพเดตล่าสุด</TableCell>
               <TableCell align="center" width={300} style={{fontSize: 16, fontWeight: 'bold'}}>เครื่องมือ</TableCell>
             </TableRow>
           </TableHead>
@@ -90,18 +93,18 @@ const PaginationWaitingTransaction = ({ data, itemsPerPage, fetch, fetch2 }) => 
                 </TableCell>
                 <TableCell align="center">{row?.amount}</TableCell>
                 <TableCell align="center">{row?.branch?.name}</TableCell>
-                <TableCell align="center">{row?.status}</TableCell>
+                <TableCell align="center" style={{ fontWeight: 'bold' }}>{row?.status == 'Waiting' ? 'รออนุมัติ' : ''}</TableCell>
                 <TableCell align="center">{row?.user_created?.username}</TableCell>
                 <TableCell align="center">
-                  <Moment format="YYYY/MM/DD HH:MM:ss">{row?.createdAt}</Moment>
+                  <Moment format="YYYY/MM/DD HH:mm:ss">{row?.createdAt}</Moment>
                 </TableCell>
                 <TableCell align="center">
-                  <Button variant="contained" color="success" disabled={row?.status != "Waiting" ? true : false} onClick={() => { approve(row?._id) }}>
-                    อนุมัติ
-                  </Button>{' '}
-                  <Button variant="outlined" color="error" disabled={row?.status != "Waiting" ? true : false} onClick={() => { cancel(row?._id) }}>
-                    ไม่อนุมัติ
-                  </Button>
+                  <IconButton style={{marginRight: '7px'}} variant="contained" color="success" disabled={row?.status != "Waiting" ? true : false} onClick={() => { approve(row?._id) }}>
+                    <CheckCircleOutlineRoundedIcon color='success' />
+                  </IconButton>
+                  <IconButton variant="contained" color="error" disabled={row?.status != "Waiting" ? true : false} onClick={() => { cancel(row?._id) }}>
+                    <HighlightOffRoundedIcon color='error' />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

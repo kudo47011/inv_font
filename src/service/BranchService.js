@@ -4,6 +4,7 @@ import { getStorage } from "../utils/utils"
 const ENDPOINT = {
     BRANCH: {
         FIND_BRANCH: `${process.env.REACT_APP_ENDPOINT}/branch`,
+        FIND_BRANCH_BY_MANAGER: (id) => `${process.env.REACT_APP_ENDPOINT}/branch/my/${id}`,
         CREATE_BRANCH: `${process.env.REACT_APP_ENDPOINT}/branch`,
         DELETE_BRANCH: (id) => `${process.env.REACT_APP_ENDPOINT}/branch/${id}`,
         UPDATE_BRANCH: (id) => `${process.env.REACT_APP_ENDPOINT}/branch/${id}`
@@ -16,8 +17,19 @@ const BranchService = {
             method: "GET",
             headers: {
                 "ngrok-skip-browser-warning": "69420",
+                Authorization: `Bearer ${getStorage("accessToken")}`
             },
             url: ENDPOINT.BRANCH.FIND_BRANCH,
+        })
+    },
+    findBranchByManager: (id) => {
+        return axios({
+            method: "GET",
+            headers: {
+                "ngrok-skip-browser-warning": "69420",
+                Authorization: `Bearer ${getStorage("accessToken")}`
+            },
+            url: ENDPOINT.BRANCH.FIND_BRANCH_BY_MANAGER(id),
         })
     },
     createBranch: (data) => {

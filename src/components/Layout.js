@@ -29,13 +29,20 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import Permission from '../context/permission.json'
 import { setLogOut } from '../redux/slices/users'
+import { setEmpty } from '../redux/slices/report'
 import LogoutIcon from '@mui/icons-material/Logout'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits'
 import InventoryIcon from '@mui/icons-material/Inventory'
-import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
-import CategoryIcon from '@mui/icons-material/Category';
+import DepartureBoardIcon from '@mui/icons-material/DepartureBoard'
+import CategoryIcon from '@mui/icons-material/Category'
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded'
+
+import { useEffect } from 'react'
+import io from 'socket.io-client'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const drawerWidth = 240
 
@@ -113,6 +120,7 @@ export default function MiniDrawer() {
 
   const logout = () => {
     dispatch(setLogOut())
+    dispatch(setEmpty())
     navigate('/login')
     localStorage.clear()
   }
@@ -125,11 +133,62 @@ export default function MiniDrawer() {
     setOpen(false)
   }
 
+  useEffect(() => {
+    const socket = io(`${process.env.REACT_APP_ENDPOINT}`) // Replace with your server URL
+
+    // Event listener for receiving messages from the server
+    socket.on('transaction', (data) => {
+      switch (data) {
+        case 'add':
+          toast.success('ทำรายการขนส่งเสร็จสิ้น', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          break
+        case 'cancel':
+          toast.error('ยกเลิกรายการแจ้งเพิ่มสินค้า', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          break
+        case 'request':
+          toast.warn('มีรายการแจ้งเพิ่มสินค้าใหม่!!', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          break
+      }
+    })
+
+    // Clean up the socket connection on component unmount
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar style={{ backgroundColor: '#708090' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -142,9 +201,9 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          {/* <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
-                    </Typography> */}
+          <Typography variant="h6" noWrap component="div">
+            Stock Management Systems
+          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -182,13 +241,21 @@ export default function MiniDrawer() {
                   >
                     {item?.title === 'Dashboard' ? (
                       <DashboardIcon />
-                    ) : item?.title === 'User' ? (
+                    ) : item?.title === 'ผู้ใช้งานระบบ' ? (
                       <AccountCircleIcon />
-                    ) : item?.title === 'Product' ? (
+                    ) : item?.title === 'สินค้า' ? (
                       <ProductionQuantityLimitsIcon />
-                    ) : item?.title === 'Stock' ? (
+                    ) : item?.title === 'คลังสินค้า' ? (
                       <InventoryIcon />
-                    ) : item?.title === 'Transaction' ? <DepartureBoardIcon /> : item?.title === 'Branch' ? <CategoryIcon /> : ""}
+                    ) : item?.title === 'รายการสินค้า' ? (
+                      <DepartureBoardIcon />
+                    ) : item?.title === 'สาขา' ? (
+                      <CategoryIcon />
+                    ) : item?.title === 'รายการเพิ่มสินค้า' ? (
+                      <DescriptionRoundedIcon />
+                    ) : (
+                      ''
+                    )}
                   </ListItemIcon>
                   <ListItemText
                     primary={item?.title}
@@ -225,6 +292,7 @@ export default function MiniDrawer() {
       <Box component="main" sx={{ flexGrow: 1, p: 10, height: '100vh' }}>
         <Outlet />
       </Box>
+      <ToastContainer />
     </Box>
   )
 }
